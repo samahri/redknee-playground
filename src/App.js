@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 
+import Chat from './components/Chat';
+
 const App = () => {
     const [game, setGame] = useState(new Chess());
     const [fen, setFen] = useState(game.fen());
@@ -43,6 +45,7 @@ const App = () => {
             <div>
                 <Chessboard boardWidth={560} position={fen} onPieceDrop={onDrop} />
             </div>
+            <Chat />
         </div>
     );
 };
