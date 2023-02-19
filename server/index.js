@@ -9,8 +9,6 @@ const PORT = 4000;
 
 app.use(cors());
 
-console.log(io);
-
 const socketIO = new Server(http, {
     cors: {
         origin: "http://localhost:5001"
@@ -20,8 +18,8 @@ const socketIO = new Server(http, {
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
-    socket.on('message', (data) => {
-        socketIO.emit('messageResponse', data);
+    socket.on('message', ({ text }) => {
+        socketIO.emit('messageResponse', {text});
     });
 
     socket.on('disconnect', () => {
