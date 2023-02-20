@@ -1,26 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
-import { connect } from 'socket.io-client';
+import SocketContext from "../../context/SocketContext";
+import { ClientEvents, ServerEvents } from "../../websocket/Events";
+import { GameSocket } from "../../websocket/GameSocket";
 
 import styles from './styles.css';
 
-const socket = connect('http://localhost:4000');
+const socket = new GameSocket();
 
 const Chat = () => {
     const [inputMsg, setInputMsg] = useState<string>('');
     const [messages, setMessages] = useState<string[]>([]);
+    const socket: GameSocket = useContext(SocketContext);
 
     useEffect(() => {
-        socket.on('messageResponse', ({text}) => setMessages([...messages, text]));
+        socket.on(ServerEvents.MSG_RESPONSE, ({text}) => setMessages([...messages, text]));
     }, [socket, messages]);
 
     const onFormSubmit = (e: any) => {
         e.preventDefault();
         if (inputMsg.trim()) {
-            socket.emit('message', {
+            socket.emit(ClientEvents.SEND_MSG, {
                 text: inputMsg,
-                id: `${socket.id}${Math.random()}`,
-                socketID: socket.id,
             });
         }
 
