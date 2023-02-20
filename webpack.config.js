@@ -1,9 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    entry: './index.js', // the application's main file
+    entry: './index.tsx', // the application's main file
     mode: 'development',
     output: { // specifiy where to the output files after bundling
         path: path.resolve(__dirname, './dist'),
@@ -20,14 +20,21 @@ module.exports = {
         liveReload: true, // reloads the browser when there's a change
     },
     resolve: { // tells Webpack which types of files to consider when building our app
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.json'],
     },
     module: { // rules to handle types of files
         rules: [
+            {
+                test: /\.(ts|tsx)$/,
+                resolve: {
+                    extensions: ['.ts', '.tsx', '.js', '.json'],
+                },
+                use: 'ts-loader',
+            },
             { // use babel-loader when confronting js or jsx files
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use: 'babel-loader', // we haven't installed babel
+                use: 'babel-loader',
             },
             {
                 test: /\.css$/,

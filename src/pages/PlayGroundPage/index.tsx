@@ -1,7 +1,7 @@
 import React from "react";
 
 import Chat from '../../components/Chat';
-import Chessboard from "../../components/Chat/Chessboard";
+import Chessboard from "../../components/Chessboard";
 
 import styles from './styles.css';
 

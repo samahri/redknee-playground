@@ -3,13 +3,13 @@ import React from "react";
 import { useState } from "react";
 
 import { Chessboard as ChessboardComponent } from "react-chessboard";
-import { Chess } from "chess.js";
+import { Chess, Square, Move } from "chess.js";
 
 const Chessboard = () => {
     const [game, setGame] = useState(new Chess());
     const [fen, setFen] = useState(game.fen());
 
-    const makeAMove = (move) => {
+    const makeAMove = (move: string | {from: string, to: string, promotion: string}): Move => {
         const result = game.move(move);
         setGame(game);
         setFen(game.fen());
@@ -17,13 +17,13 @@ const Chessboard = () => {
     }
 
     const makeRandomMove = () => {
-        const possibleMoves = game.moves();
+        const possibleMoves: string[] = game.moves();
         if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) return; // exit if the game is over
         const randomIndex = Math.floor(Math.random() * possibleMoves.length);
         makeAMove(possibleMoves[randomIndex]);
     }
 
-    const onDrop = (sourceSquare, targetSquare) => {
+    const onDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
         const move = makeAMove({
             from: sourceSquare,
             to: targetSquare,
