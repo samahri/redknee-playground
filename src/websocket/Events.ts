@@ -1,4 +1,5 @@
 export enum ClientEvents {
+    CONNECT = 'connection',
     SEND_MSG = "message"
 }
 

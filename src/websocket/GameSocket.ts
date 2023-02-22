@@ -6,6 +6,7 @@ export class GameSocket {
 
     constructor() {
         this.socket = io('http://localhost:4000');
+        this.socket.connect();
     }
 
     emit(event: ClientEvents, data: any) {
