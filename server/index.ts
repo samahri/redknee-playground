@@ -23,6 +23,10 @@ socketIO.on(ClientEvents.CONNECT, (socket: Socket) => {
         socketIO.emit(ServerEvents.MSG_RESPONSE, {text});
     });
 
+    socket.on(ClientEvents.MOV, ({fen}: {fen:string}) => {
+        socket.broadcast.emit(ServerEvents.UPDATE, {fen});
+    })
+
     socket.on('disconnect', () => {
         console.log('🔥: A user disconnected');
     });
