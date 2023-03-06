@@ -1,4 +1,4 @@
-import { Server } from 'socket.io'
+import { Server } from 'socket.io';
 import http from 'http';
 import { ClientEvents, ServerEvents } from '../src/websocket/Events';
 

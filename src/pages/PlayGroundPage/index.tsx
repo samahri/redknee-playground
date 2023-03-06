@@ -1,12 +1,13 @@
 import React from "react";
+import { useLoaderData } from "react-router-dom";
 
 import Chat from '../../components/Chat';
 import Chessboard from "../../components/Chessboard";
 
 import styles from './styles.css';
 
-const PlayGroundPage = () => {
-    
+const PlaygroundPage = () => {
+
     return (
         <div>
             <h1>
@@ -20,4 +21,4 @@ const PlayGroundPage = () => {
     )
 }
 
-export default PlayGroundPage;
+export default PlaygroundPage;
