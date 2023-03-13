@@ -1,22 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 
 import Chat from '../../components/Chat';
 import Chessboard from "../../components/Chessboard";
+import { LoaderInterface } from "../../routs";
 
 import styles from './styles.css';
 
 const PlaygroundPage = () => {
 
+    const { gameId } = useLoaderData() as LoaderInterface;
+    
+    useEffect(() => {
+        fetch(`http://localhost:4000/api/game/${gameId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                // window.history.pushState({}, '', `/game/${data.id}`);                
+            });
+    }, []);
+
     return (
-        <div>
-            <h1>
-                Welcome to Redknee
-            </h1>
-            <div className={styles.container}>
-                <Chessboard />
-                <Chat />
-            </div>
+        <div className={styles.container}>
+            <Chessboard />
+            <Chat />
         </div>
     )
 }
