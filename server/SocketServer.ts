@@ -23,7 +23,7 @@ export class SocketServer {
 
     registerEvents() {
         this.socketIO.on(ClientEvents.CONNECT, (socket: Socket) => {
-            console.log(`⚡: ${socket.id} user just connected!`);
+            console.log(`⚡: ${socket.handshake.auth.gameId} user just connected!`);
         
             // socket.on(ClientEvents.SEND_MSG, ({ text }: {text: string}) => {
             //     this.socketIO.emit(ServerEvents.MSG_RESPONSE, {text});

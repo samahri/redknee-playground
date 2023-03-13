@@ -22,7 +22,10 @@ const PlaygroundPage = () => {
             .then((data) => {
             });
 
-        return socket.disconnect();
+        return () => {
+            socket.disconnect();
+        }
+
     }, []);
 
     return (
