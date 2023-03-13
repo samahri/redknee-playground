@@ -1,8 +1,6 @@
 import { Context, createContext } from 'react';
 import { GameSocket } from '../websocket/GameSocket';
 
-const socket = new GameSocket();
-
-const SocketContext: Context<GameSocket> = createContext(socket);
+const SocketContext: Context<GameSocket> = createContext({} as GameSocket);
 
 export default SocketContext;

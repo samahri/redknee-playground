@@ -4,12 +4,12 @@ import { ClientEvents, ServerEvents } from './Events';
 export class GameSocket {
     private socket: Socket;
 
-    constructor() {
+    constructor(gameId :string) {
         this.socket = io('http://localhost:4000');
+        this.socket.auth = { gameId };
     }
 
-    connect(gameId :string) {
-        this.socket.auth = { gameId };
+    connect() {
         this.socket.connect();
     }
 

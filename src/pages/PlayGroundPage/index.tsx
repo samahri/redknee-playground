@@ -12,10 +12,10 @@ import styles from './styles.css';
 const PlaygroundPage = () => {
 
     const { gameId } = useLoaderData() as LoaderInterface;
-    const socket: GameSocket = useContext(SocketContext);
+    const socket: GameSocket = new GameSocket(gameId);
     
     useEffect(() => {
-        socket.connect(gameId);
+        socket.connect();
 
         fetch(`http://localhost:4000/api/game/${gameId}`)
             .then((res) => res.json())
@@ -27,8 +27,10 @@ const PlaygroundPage = () => {
 
     return (
         <div className={styles.container}>
-            <Chessboard />
-            {/* <Chat /> */}
+            <SocketContext.Provider value={socket}>
+                <Chessboard />
+                {/* <Chat /> */}
+            </SocketContext.Provider>
         </div>
     )
 }

@@ -37,7 +37,8 @@ export class SocketServer {
             });
         
             socket.on('disconnect', () => {
-                console.log('🔥: A user disconnected');
+                console.log(`🔥: ${socket.handshake.auth.gameId} disconnected`);
+                socket.leave(socket.handshake.auth.gameId);
             });
         
             socket.onAny((event: any, ...args: any) => {
