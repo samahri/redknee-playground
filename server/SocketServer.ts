@@ -1,4 +1,4 @@
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import http from 'http';
 import { ClientEvents, ServerEvents } from '../src/websocket/Events';
 
@@ -19,5 +19,30 @@ export class SocketServer {
 
     on(event: ClientEvents, fallback: (socket: any) => void) {
         this.socketIO.on(event, fallback);
+    }
+
+    registerEvents() {
+        this.socketIO.on(ClientEvents.CONNECT, (socket: Socket) => {
+            console.log(`⚡: ${socket.id} user just connected!`);
+        
+            // socket.on(ClientEvents.SEND_MSG, ({ text }: {text: string}) => {
+            //     this.socketIO.emit(ServerEvents.MSG_RESPONSE, {text});
+            // });
+
+            socket.join(socket.handshake.auth.gameId);
+        
+            socket.on(ClientEvents.MOV, ({fen}: {fen:string}) => {
+                console.log(`socket ${socket.handshake.auth.gameId} made a move`)
+                socket.to(socket.handshake.auth.gameId).emit(ServerEvents.UPDATE, { fen });
+            });
+        
+            socket.on('disconnect', () => {
+                console.log('🔥: A user disconnected');
+            });
+        
+            socket.onAny((event: any, ...args: any) => {
+                console.log(`got ${event}`);
+            });
+        });
     }
 }

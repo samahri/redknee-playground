@@ -6,7 +6,15 @@ export class GameSocket {
 
     constructor() {
         this.socket = io('http://localhost:4000');
+    }
+
+    connect(gameId :string) {
+        this.socket.auth = { gameId };
         this.socket.connect();
+    }
+
+    disconnect() {
+        this.socket.disconnect();
     }
 
     emit(event: ClientEvents, data: any) {

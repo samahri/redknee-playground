@@ -6,8 +6,6 @@ import { GameSocket } from "../../websocket/GameSocket";
 
 import styles from './styles.css';
 
-const socket = new GameSocket();
-
 const Chat = () => {
     const [inputMsg, setInputMsg] = useState<string>('');
     const [messages, setMessages] = useState<string[]>([]);
