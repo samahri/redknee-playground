@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server .",
     "server": "ts-node server/index.ts",
-    "build": "webpack ."
+    "build": "webpack .",
+    "fs-start": "webpack . && cd server && ts-node index.ts"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
     "@types/jest": "^29.4.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.0",

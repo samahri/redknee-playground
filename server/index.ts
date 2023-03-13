@@ -1,6 +1,7 @@
 // import vs using require()
 import express from 'express';
 import http from 'http';
+import path from 'path';
 import cors from 'cors';
 import crypto from 'crypto';
 import { Socket } from 'socket.io';
@@ -16,6 +17,7 @@ app.use(cors());
 const httpServer = new http.Server(app);
 
 const PORT = 4000;
+const guidRegex = `[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`;
 
 const socketIO = new SocketServer(httpServer);
 const gameStore = new GameStore();
@@ -41,7 +43,7 @@ socketIO.on(ClientEvents.CONNECT, (socket: Socket) => {
 });
 
 // called when a player starts the game
-app.get('/game/start', (req, res) => {
+app.get('/api/game/start', (req, res) => {
 
     const uuid = crypto.randomUUID();
     
@@ -50,11 +52,22 @@ app.get('/game/start', (req, res) => {
         state: GameState.WAIT
     }
 
-    // TODO: check if the game exists, return an error
+    // TODO:  return an error if the game exists
 
     gameStore.saveGame(game);
 
     res.send(JSON.stringify(game));
+});
+
+app.get(`/api/game/:uuid(${guidRegex})`, (req, res, next) => {
+    // TODO: implement API
+});
+
+// serve the react app
+app.use(express.static(path.join(__dirname, '..', 'dist')));
+
+app.get('*', (req, res, next) => {
+    res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
 
 httpServer.listen(PORT, () => {

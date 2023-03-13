@@ -10,11 +10,12 @@ const WelcomePage = () => {
 
     const startGame = () => {
         // TODO: don't hardcode the url
-        fetch('http://localhost:4000/game/start')
+        fetch('http://localhost:4000/api/game/start')
             .then((res) => res.json())
             .then((data) => {
-                window.history.pushState({}, '', `/game/${data.id}`);
+                // window.history.pushState({}, '', `/game/${data.id}`);
                 navigate(`/game/${data.id}`);
+                
             });
     }
 
