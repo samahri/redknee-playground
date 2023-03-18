@@ -19,7 +19,7 @@ module.exports = {
         open: true, // automatically open the browser when the script runs
         hot: true, // enable hot swapping: don't need to relaunch when the app changes
         liveReload: true, // reloads the browser when there's a change
-        // historyApiFallback: true, // commented out because I don't know what it does and does't solve anything
+        historyApiFallback: true, // commented out because I don't know what it does and does't solve anything
     },
     resolve: { // tells Webpack which types of files to consider when building our app
         extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.json'],

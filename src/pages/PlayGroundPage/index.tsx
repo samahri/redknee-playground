@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 import Chat from '../../components/Chat';
 import Chessboard from "../../components/Chessboard";
@@ -11,21 +11,33 @@ import styles from './styles.css';
 
 const PlaygroundPage = () => {
 
-    const { gameId } = useLoaderData() as LoaderInterface;
+    const { gameId, fromHomepage } = useLoaderData() as LoaderInterface;
     const socket: GameSocket = new GameSocket(gameId);
+    const navigate = useNavigate();
     
     useEffect(() => {
         socket.connect();
 
-        fetch(`http://localhost:4000/api/game/${gameId}`)
-            .then((res) => res.json())
-            .then((data) => {
+        if (!fromHomepage) {
+
+            fetch(`http://localhost:4000/api/game/${gameId}`)
+            .then((res) => {
+                console.log(res);
+                if (res.status === 404) {
+                    // TODO: indicate to the user game is not available
+                    return navigate('/');
+                }
+                res.json()
+                console.log(res);
+            }).then((data) => {
+                console.log(data);
             });
+        }
 
         return () => {
             socket.disconnect();
-        }
-
+        } 
+        
     }, []);
 
     return (

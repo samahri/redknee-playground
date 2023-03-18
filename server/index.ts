@@ -11,6 +11,7 @@ import GameStore from './GameStore';
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const httpServer = new http.Server(app);
 
@@ -40,13 +41,39 @@ app.get('/api/game/start', (req, res) => {
 });
 
 app.get(`/api/game/:uuid(${guidRegex})`, (req, res, next) => {
-    // TODO: implement API
+    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.header("Pragma", "no-cache");
+    res.header("Expires", '0');
+
+    const gameId = req.params.uuid;
+
+    const game = gameStore.findGame(gameId);
+
+    if (game === undefined) {
+        return res.status(404);
+    } 
+
+    if (game.state.valueOf() === GameState.IN_PROGRESS.valueOf()) {
+        // todo: find a more accurate response code and/or payload to indicate game is not available
+        console.log('3nd player registered');
+        return res.status(404);
+    }
+    
+    const newGame = {
+        ...game,
+        state: GameState.IN_PROGRESS
+    }
+
+    gameStore.saveGame(newGame);
+
+    res.status(200);
 });
 
 // serve the react app
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 app.get('*', (req, res, next) => {
+    console.log('getting *');
     res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
 });
 

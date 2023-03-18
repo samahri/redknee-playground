@@ -11,9 +11,12 @@ const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
 
 export interface LoaderInterface {
     gameId: string,
+    fromHomepage: boolean,
 }
 
 const validatePath: LoaderFunction = ({ params }: { params: Params }): LoaderInterface => {
+    const fromHomepage = window.location.pathname === '/';
+    
     const gameId = params.id as string
 
     const matchedExp = gameId.match(uuidRegex);
@@ -25,7 +28,7 @@ const validatePath: LoaderFunction = ({ params }: { params: Params }): LoaderInt
         });
     }
 
-    return { gameId };
+    return { gameId, fromHomepage };
 }
 
 const router: Router = createBrowserRouter([
