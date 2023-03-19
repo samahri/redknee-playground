@@ -5,6 +5,7 @@ import Chat from '../../components/Chat';
 import Chessboard from "../../components/Chessboard";
 import SocketContext from "../../context/SocketContext";
 import { LoaderInterface } from "../../routs";
+import { ServerEvents } from "../../websocket/Events";
 import { GameSocket } from "../../websocket/GameSocket";
 
 import styles from './styles.css';
@@ -17,6 +18,11 @@ const PlaygroundPage = () => {
     
     useEffect(() => {
         socket.connect();
+
+        socket.on(ServerEvents.UNAVAILABLE, () => {
+            // todo: find better way than this
+            navigate('/');
+        })
 
         if (!fromHomepage) {
 

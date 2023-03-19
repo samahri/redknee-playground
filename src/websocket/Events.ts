@@ -6,6 +6,7 @@ export enum ClientEvents {
 
 export enum ServerEvents {
     MSG_RESPONSE = "messageResponse",
-    UPDATE='updatePiece'
+    UPDATE='updatePiece',
+    UNAVAILABLE="game unavailable"
 }
 

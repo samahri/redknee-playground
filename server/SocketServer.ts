@@ -29,16 +29,26 @@ export class SocketServer {
             //     this.socketIO.emit(ServerEvents.MSG_RESPONSE, {text});
             // });
 
-            socket.join(socket.handshake.auth.gameId);
+            const roomName = socket.handshake.auth.gameId;
+            const roomSize = this.socketIO.sockets.adapter.rooms.get(roomName)?.size || 0;
+            
+            console.log(roomName);
+            console.log(roomSize);
+
+            if (roomSize >= 2) {
+                this.socketIO.to(socket.id).emit(ServerEvents.UNAVAILABLE);
+            }
+
+            socket.join(roomName);
         
             socket.on(ClientEvents.MOV, ({fen}: {fen:string}) => {
-                console.log(`socket ${socket.handshake.auth.gameId} made a move`)
-                socket.to(socket.handshake.auth.gameId).emit(ServerEvents.UPDATE, { fen });
+                console.log(`socket ${roomName} made a move`)
+                socket.to(roomName).emit(ServerEvents.UPDATE, { fen });
             });
         
             socket.on('disconnect', () => {
-                console.log(`🔥: ${socket.handshake.auth.gameId} disconnected`);
-                socket.leave(socket.handshake.auth.gameId);
+                console.log(`🔥: ${roomName} disconnected`);
+                socket.leave(roomName);
             });
         
             socket.onAny((event: any, ...args: any) => {
